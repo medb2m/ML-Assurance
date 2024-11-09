@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Data Preparation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Data Preparation</h1>
+        <p>Ce processus gère automatiquement les valeurs manquantes, supprime les doublons, retire les valeurs aberrantes, et encode les variables catégoriques.</p>
+
+        <!-- Bouton pour la préparation complète des données -->
+        <form method="post" onsubmit="showLoading();">
+            <button type="submit" name="data_preparation" class="btn btn-primary">Préparer les Données</button>
+        </form>
+
+        <!-- Overlay for loading -->
+        <div class="overlay" id="loadingOverlay">
+            <div class="loader"></div>
+            <div>Preparing data...</div>
+            <div id="preparationSteps">
+                <div class="step" id="step1">Handling Missing Values</div>
+                <div class="step" id="step2">Encoding Categorical Variables</div>
+                <div class="step" id="step3">Scaling Data</div>
+                <div class="step" id="step4">Creating New Features</div>
+                <div class="step" id="step5">Detecting Outliers</div>
+            </div>
+        </div>
+
+        <!-- Details of missing values and duplicates -->
+        <h2>Colonnes avec valeurs manquantes</h2>
+        {% if missing_columns %}
+            <ul>
+                {% for column, missing in missing_columns.items() %}
+                    <li>{{ column }} : {{ missing }} valeurs manquantes</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucune valeur manquante trouvée</p>
+        {% endif %}
+
+        <h2>Suppression des Doublons</h2>
+        <p>0 doublons trouvés.</p>
+
+
+        <a href="{{ url_for('data_understanding', filepath=filepath) }}" class="btn btn-secondary">Retour à la Compréhension des
+            Données</a>
+        <a href="{{ url_for('modeling', filepath=filepath) }}" class="btn btn-success">Aller à la Modélisation</a>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById("loadingOverlay").style.display = "flex";
+
+            // Simulate step-by-step updates (adjust timing for actual backend processing time)
+            let steps = [
+                "step1", "step2", "step3", "step4", "step5"
+            ];
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    document.getElementById(step).classList.add("active");
+                }, (index + 1) * 8000);  // 1 second intervals for demonstration
+            });
+        }
+    </script>
+
+</body>
+
+</html>

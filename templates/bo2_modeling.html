@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Assurance guys!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset and Basic Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .report-section, .prediction-form {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .report-section pre {
+            background: #eaeaea;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .prediction-result {
+            background-color: #eafaf1;
+            color: #2ecc71;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Impact du Tabagisme sur les Coûts Médicaux</h1>
+        
+        <div class="report-section">
+            <h2>Rapport de Classification KNN</h2>
+        <pre>{{ knn_report }}</pre>
+        <h2>Matrice de Confusion KNN</h2>
+        <img src="{{ url_for('static', filename='images/knn_confusion_matrix.png') }}" alt="Matrice de Confusion KNN">
+        </div>
+        
+        <div class="report-section">
+        <h2>Rapport de Classification Arbre de Décision</h2>
+        <pre>{{ dt_report }}</pre>
+        <h2>Matrice de Confusion Arbre de Décision</h2>
+        <img src="{{ url_for('static', filename='images/dt_confusion_matrix.png') }}" alt="Matrice de Confusion Arbre de Décision">
+        </div>
+
+        <div class="prediction-form">
+            <h2>Prediction de Tabagisme</h2>
+        <form method="post">
+            <label>Age: <input type="number" step="any" name="age" required></label><br>
+            <label>BMI: <input type="number" step="any" name="bmi" required></label><br>
+            <label>Children: <input type="number" name="children" required></label><br>
+            <label>Charges: <input type="number" step="any" name="charges" required></label><br>
+            <button type="submit">Predict</button>
+        </form>
+        </div>
+        
+
+        <!-- Display Prediction Results -->
+        {% if prediction_result %}
+        <div class="prediction-result">
+            <h2>Résultat de Prédiction</h2>
+            <p><strong>KNN :</strong> {{ prediction_result['KNN'] }}</p>
+            <p><strong>Arbre de Décision :</strong> {{ prediction_result['DecisionTree'] }}</p>
+        </div>
+        {% endif %}
+</div>
+
+
+    <script src="/static/main.js"></script>
+</body>
+
+</html>

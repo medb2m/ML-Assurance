@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Data Understanding</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic Reset and Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .image-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .image-container {
+            flex: 1 1 calc(50% - 15px);
+            max-width: calc(50% - 15px);
+            background: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .collapsible {
+            display: none;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .btn-primary {
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #2ecc71;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .btn-primary:hover {
+            background-color: #27ae60;
+        }
+        .missing-data-table, .duplicates-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .missing-data-table th, .duplicates-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .missing-data-table th, .duplicates-table th,
+        .missing-data-table td, .duplicates-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .missing-data-table tr:nth-child(even), .duplicates-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Data Understanding</h1>
+
+        <h2>Dataset Information</h2>
+        <p><strong>Number of Rows:</strong> {{ num_rows }}</p>
+        <p><strong>Number of Columns:</strong> {{ num_columns }}</p>
+    
+        <h2>Column Information</h2>
+        <ul>
+            {% for column, dtype in column_info.items() %}
+            <li>{{ column }}: {{ dtype }}</li>
+            {% endfor %}
+        </ul>
+    
+        <h2>Summary Statistics</h2>
+        <div>{{ summary_stats|safe }}</div>
+    
+        <h2>Analyse des données manquantes</h2>
+        <p>L'analyse des données manquantes nous aide à comprendre quelles colonnes ont des valeurs manquantes.</p>
+        <div>{{ missing_data_html|safe }}</div>
+    
+        <h2>Analyse des Données Doublées</h2>
+        <p>L'analyse des données doublées consiste à identifier et gérer les doublons dans notre ensemble de données.</p>
+        <p><strong>Nombre total de doublons :</strong> {{ num_duplicates }}</p>
+        
+        <button onclick="toggleDuplicatesTable()" id="toggleButton">Show Duplicate Rows</button>
+        <div id="duplicatesContainer" class="collapsible">
+            {{ duplicates_html|safe }}
+        </div>
+    
+        <h2>Visualisations</h2>
+        <div class="image-grid">
+            {% for image in images %}
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='images/' + image) }}" alt="Visualization">
+            </div>
+            {% endfor %}
+        </div>
+    
+        <h2>Analyse des Données Bruitées</h2>
+        <p>L'analyse des données bruitées consiste à identifier les valeurs aberrantes (outliers) qui peuvent fausser les résultats de vos analyses.</p>
+        
+        {% for column in numeric_columns %}
+            <div style="margin-bottom: 20px;">
+                <h3>Boxplot de {{ column }}</h3>
+                <img src="{{ url_for('static', filename='images/boxplot_' + column + '.png') }}" alt="Boxplot de {{ column }}" style="width: 80%; max-width: 600px;">
+            </div>
+        {% endfor %}
+    
+        <button onclick="location.href='{{ url_for('index') }}'">Back to Home</button>
+        <a href="{{ url_for('data_preparation', filepath=filepath) }}" class="btn btn-primary">Aller à la Préparation des Données</a>
+    </div>
+    
+    <script src="/static/main.js"></script>
+    <script>
+        function toggleDuplicatesTable() {
+            var container = document.getElementById("duplicatesContainer");
+            if (container.style.display === "none" || container.style.display === "") {
+                container.style.display = "block";
+                document.getElementById("toggleButton").innerText = "Hide Duplicate Rows";
+            } else {
+                container.style.display = "none";
+                document.getElementById("toggleButton").innerText = "Show Duplicate Rows";
+            }
+        }
+    </script>
+</body>
+
+</html>

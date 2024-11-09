@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Assurance guys!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Assurance Project</h1>
+        <!-- Business Understanding Section -->
+        <section class="business-objectives">
+            <h2>Business Understanding</h2>
+            <p>
+                Clarification des Business Objectives (BOs). Pour chacun des quatre objectifs, il est crucial de bien
+                saisir comment les résultats des analyses et modèles prédictifs pourront influencer les politiques
+                d’assurance, les stratégies de tarification, et la gestion des risques.
+            </p>
+
+            <!-- Business Objective Cards -->
+            <div class="objectives">
+                <!-- BO1 Card -->
+                <div class="card">
+                    <h3>BO1: Prédire les coûts médicaux par personne</h3>
+                    <p><strong>Impact:</strong> Une prédiction précise des coûts médicaux individuels permet à
+                        l’assurance de calculer les primes en amont et d’anticiper les dépenses. L’utilisation de cette
+                        prédiction lors de l’inscription des clients pourrait optimiser les primes selon le profil de
+                        risque de chaque assuré.</p>
+                </div>
+
+                <!-- BO2 Card -->
+                <div class="card">
+                    <h3>BO2: Analyser l’impact du tabagisme sur les coûts médicaux</h3>
+                    <p><strong>Impact:</strong> Comprendre l’effet du tabagisme sur les dépenses médicales permettrait
+                        de développer une tarification différentielle entre fumeurs et non-fumeurs. Cela pourrait
+                        également orienter des programmes d’incitation pour encourager les assurés à arrêter de fumer.
+                    </p>
+                </div>
+
+                <!-- BO3 Card -->
+                <div class="card">
+                    <h3>BO3: Prédire les coûts médicaux en fonction du nombre d’enfants</h3>
+                    <p><strong>Impact:</strong> Une estimation des coûts en fonction du nombre d’enfants aide à prévoir
+                        les dépenses globales d’une famille assurée. Elle permet de concevoir des primes ajustées selon
+                        le nombre d’enfants et de gérer le risque financier associé aux familles plus nombreuses.</p>
+                </div>
+
+
+            </div>
+        </section>
+
+        <!-- CSV Upload Form -->
+        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".csv">
+            <button type="submit">Upload CSV</button>
+        </form>
+
+        <!-- CRISP-DM Steps -->
+        <div class="steps">
+            <h2>CRISP-DM Steps</h2>
+            <button onclick="location.href='{{ url_for('data_understanding', filepath='dataAssurance.csv') }}'">
+                Data Understanding
+            </button>
+            <!-- Add buttons and link for other steps when needed -->
+        </div>
+    </div>
+
+    <!-- Popup Modal for File Upload -->
+    <div id="uploadPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="hideUploadPopup()">&times;</span>
+            <h2>Upload CSV File</h2>
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".csv" required>
+                <button type="submit">Upload and Proceed to Data Understanding</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/main.js"></script>
+</body>
+
+</html>

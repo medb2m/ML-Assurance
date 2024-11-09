@@ -1,0 +1,41 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Assurance guys!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Modélisation</h1>
+    
+        <h2>Business Objectives (BOs)</h2>
+    
+        <!-- BO1: Prédire les coûts médicaux par personne -->
+        <div class="bo-section">
+            <h3>BO1: Prédire les coûts médicaux par personne</h3>
+            <a href="{{ url_for('bo1_modeling') }}" class="btn btn-primary">Voir Modélisation</a>
+        </div>
+    
+        <!-- BO2: Analyser l’impact du tabagisme sur les coûts médicaux -->
+        <div class="bo-section">
+            <h3>BO2: Analyser l’impact du tabagisme sur les coûts médicaux</h3>
+            <a href="{{ url_for('bo2_modeling') }}" class="btn btn-primary">Voir Modélisation</a>
+        </div>
+    
+        <!-- BO3: Prédire les coûts médicaux en fonction du nombre d’enfants -->
+        <div class="bo-section">
+            <h3>BO3: Prédire les coûts médicaux en fonction du nombre d’enfants</h3>
+            <a href="{{ url_for('bo3_modeling') }}" class="btn btn-primary">Voir Modélisation</a>
+        </div>
+    </div>
+
+    <script src="/static/main.js"></script>
+</body>
+
+</html>
